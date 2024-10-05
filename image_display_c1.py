@@ -2,11 +2,18 @@ import pygame
 import utils
 
 class SimpleBackgroundGame(utils.Game):
-    def __init__(self, screen, image):
+    def __init__(self, screen, image, menu):
         super().__init__()
         self.screen = screen
+        self.background_image_name = image  # Store the image filename
         self.background = utils.AssetManager.load_image(image, 'menu', self.screen.get_width(), self.screen.get_height())
         self.running = True
+        self.menu = menu  # Store reference to the menu
+        
+        # Create return button
+        button_image = utils.AssetManager.load_image('quit_button.png', 'menu', 50, 50)
+        self.return_button = pygame.Rect(20, 20, 50, 50)
+        self.return_button_image = button_image
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -15,6 +22,10 @@ class SimpleBackgroundGame(utils.Game):
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.running = False
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.return_button.collidepoint(event.pos):
+                    self.unlock_first_minigame()
+                    return False  # Exit the game loop
         return self.running
 
     def update(self):
@@ -22,13 +33,24 @@ class SimpleBackgroundGame(utils.Game):
 
     def draw(self):
         self.screen.blit(self.background, (0, 0))
+        self.screen.blit(self.return_button_image, self.return_button)
         pygame.display.flip()
 
     def run(self):
         while self.running:
             if not self.handle_events():
-                return "quit"
+                return "menu"  # Return to menu
             self.update()
             self.draw()
             self.clock.tick(60)
         return "quit"
+
+    def unlock_first_minigame(self):
+        # Determine which row this game belongs to
+        for row, (image, _) in self.menu.starting_images.items():
+            if image == self.background_image_name:
+                # Unlock the first minigame in the corresponding row
+                game_key = self.menu.games[row][0][0]  # Get the game key of the first game in this row
+                self.menu.unlocked_levels[game_key][0] = True
+                self.menu.buttons = self.menu.create_buttons()  # Update buttons after unlocking
+                break

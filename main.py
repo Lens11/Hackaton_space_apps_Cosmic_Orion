@@ -74,7 +74,7 @@ class Menu:
             # Create the SimpleBackgroundGame button for this row
             image_name, display_name = self.starting_images[row]
             buttons.append(ImageButton(80, y+10, "play-button.png", scale=0.5, 
-                                       game_class=lambda s, img=image_name: im_disp.SimpleBackgroundGame(s, image=img), 
+                                       game_class=lambda s, img=image_name: im_disp.SimpleBackgroundGame(s, image=img, menu=self), 
                                        display_name=display_name, unlocked=True, 
                                        game_key="simple_background", size=50))
             for col, (game_key, game_class, image_name, display_name) in enumerate(game_column):
@@ -164,11 +164,13 @@ def main():
         if game_class is None:
             break
         
-        game = game_class(screen)
+        game = game_class(screen, menu) if game_class == im_disp.SimpleBackgroundGame else game_class(screen)
         result = game.run()
         
         if result == "quit":
             break
+        elif result == "menu":
+            continue
         
         # Show game over screen
         font = pygame.font.SysFont("Arial", 64)
