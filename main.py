@@ -50,7 +50,7 @@ class Menu:
                 buttons.append(ImageButton(x, y, image_name, scale=0.5, game_class=game_class, display_name=display_name))
         
         # Add Quit button
-        buttons.append(ImageButton(WIDTH // 2 - 50, HEIGHT - 70, "quit_button.png", scale=0.5, game_class=None, display_name="Quit"))
+        buttons.append(ImageButton(WIDTH // 2 - 50, HEIGHT - 70, "quit_button.png", scale=0.5, game_class=None, display_name="Exit Game"))
         return buttons
 
     def run(self):
