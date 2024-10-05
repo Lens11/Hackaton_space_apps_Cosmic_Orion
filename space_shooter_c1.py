@@ -50,8 +50,8 @@ class Player(GameObject):
 class Enemy(GameObject):
     def __init__(self):
         super().__init__(utils.AssetManager.load_image('enemy.png', 50, 50), 
-                         random.randint(0, WIDTH - 50), 
-                         random.randint(-100, -40))
+        random.randint(0, WIDTH - 50), 
+        random.randint(-100, -40))
         self.speed = random.randint(1, 3)
 
     def update(self):
@@ -69,7 +69,45 @@ class Bullet(GameObject):
         if self.rect.bottom < 0:
             self.kill()
 
+class PowerUp(pygame.sprite.Sprite):
+    def __init__(self):
+        super().__init__()
+        self.image = load_image('powerup.png', 30, 30)
+        self.rect = self.image.get_rect()
+        self.rect.x = random.randint(0, WIDTH - self.rect.width)
+        self.rect.y = random.randint(-100, -40)
+        self.speed = random.randint(3, 5)
+        
+    def update(self):
+        self.rect.y += self.speed
+        if self.rect.top > HEIGHT:
+            self.kill()
 
+# Explosion class
+class Explosion(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        super().__init__()
+        self.images = [load_image(f'explosion{i}.png', 50, 50) for i in range(1, 8)]  # Assuming you have 5 explosion images
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.rect.center = (x, y)
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.frame_rate = 50  # milliseconds
+
+    def update(self):
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.frame_rate:
+            self.last_update = now
+            self.frame += 1
+            if self.frame == len(self.images):
+                self.kill()
+            else:
+                center = self.rect.center
+                self.image = self.images[self.frame]
+                self.rect = self.image.get_rect()
+                self.rect.center = center
+                
 
 class ShooterGame(utils.Game):
     def __init__(self, screen):
@@ -99,7 +137,12 @@ class ShooterGame(utils.Game):
             enemy = Enemy()
             self.all_sprites.add(enemy)
             self.enemies.add(enemy)
-
+            
+        if random.randint(1, 1000) == 1:
+            power = PowerUp()
+            self.all_sprites.add(power)
+            self.powerups.add(power)
+            
         hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
         for hit in hits:
             enemy = Enemy()
