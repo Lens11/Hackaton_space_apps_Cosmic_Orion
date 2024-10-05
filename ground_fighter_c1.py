@@ -15,7 +15,6 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-
 class GameObject(pygame.sprite.Sprite):
     def __init__(self, image, x, y):
         super().__init__()
@@ -29,12 +28,12 @@ class GameObject(pygame.sprite.Sprite):
 
 class Player(GameObject):
     def __init__(self, x, y):
-        super().__init__(utils.AssetManager.load_image('player.png','ground_fighter', 75, 100), x, y)
+        super().__init__(utils.AssetManager.load_image('space-suit.png', 'ground_fighter', 40, 65), x, y)
         self.speed = 5
         self.fireballs = pygame.sprite.Group()
         self.max_health = 100
         self.current_health = 100
-        self.direction = 1
+        self.direction = 1  # 1 pour droite, -1 pour gauche
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -46,39 +45,43 @@ class Player(GameObject):
             self.direction = 1
 
     def shoot(self):
-        fireball = Fireball(self.rect.centerx, self.rect.top, self.direction)
+        fireball = Fireball(self.rect.centerx, self.rect.centery, self.direction)
         self.fireballs.add(fireball)
         return fireball
 
     def draw_health_bar(self, surface):
-        # Dessine la barre de vie du joueur
-        bar_width = 150
-        bar_height = 20
+        bar_width = 60
+        bar_height = 10
         health_ratio = self.current_health / self.max_health
-        pygame.draw.rect(surface, RED, (10, 10, bar_width, bar_height))  # Barre rouge (fond)
-        pygame.draw.rect(surface, GREEN, (10, 10, bar_width * health_ratio, bar_height))  # Barre verte (vie)
+        bar_y = self.rect.top -20  # Positionner la barre au-dessus du joueur
+        pygame.draw.rect(surface, RED, (self.rect.x, bar_y, bar_width, bar_height))
+        pygame.draw.rect(surface, GREEN, (self.rect.x, bar_y, bar_width * health_ratio, bar_height))
 
 class Fireball(GameObject):
-    def __init__(self, x, y):
-        super().__init__(utils.AssetManager.load_image('projectile.png','ground_fighter', 20, 20), x, y)
-        self.speed_y = -10
+    def __init__(self, x, y, direction):
+        super().__init__(utils.AssetManager.load_image('projectile.png', 'ground_fighter', 20, 20), x, y)
+        self.speed_x = 10 * direction
+        self.direction = direction
 
     def update(self):
-        self.rect.y += self.speed_y
-        if self.rect.bottom < 0:
+        self.rect.x += self.speed_x
+        if self.rect.right < 0 or self.rect.left > WIDTH:
             self.kill()
 
 class Enemy(GameObject):
-    def __init__(self):
-        if random.choice([True, False]):
-            x = -50
+    def __init__(self, speed_multiplier=1):
+        side = random.choice(['left', 'right'])
+        if side == 'left':
+            x = 0
+            direction = 1
         else:
             x = WIDTH
-        y = HEIGHT - 120
-        super().__init__(utils.AssetManager.load_image('enemy.png','ground_fighter', 50, 100), x, y)
-        self.speed_x = random.randint(3, 6) * (-1 if x == WIDTH else 1)
-        self.max_health = 60
-        self.current_health = 60
+            direction = -1
+        y = HEIGHT - 140
+        super().__init__(utils.AssetManager.load_image('monster.png', 'ground_fighter', 25, 50), x, y)
+        self.speed_x = random.randint(1, 4) * direction * speed_multiplier
+        self.max_health = 40
+        self.current_health = 40
 
     def update(self):
         self.rect.x += self.speed_x
@@ -86,26 +89,27 @@ class Enemy(GameObject):
             self.kill()
 
     def draw_health_bar(self, surface):
-        # Dessine la barre de vie de l'ennemi
-        bar_width = 50
-        bar_height = 5
+        bar_width = 30
+        bar_height = 4
         health_ratio = self.current_health / self.max_health
-        pygame.draw.rect(surface, RED, (self.rect.x, self.rect.y - 10, bar_width, bar_height))  # Fond rouge
-        pygame.draw.rect(surface, GREEN, (self.rect.x, self.rect.y - 10, bar_width * health_ratio, bar_height))  # Barre verte
+        pygame.draw.rect(surface, RED, (self.rect.x, self.rect.y - 10, bar_width, bar_height))
+        pygame.draw.rect(surface, GREEN, (self.rect.x, self.rect.y - 10, bar_width * health_ratio, bar_height))
 
 class GroundFighterGame:
     def __init__(self, screen):
         self.screen = screen
-        self.background = utils.AssetManager.load_image('background.jpg','ground_fighter', WIDTH, HEIGHT)
-        self.player = Player(WIDTH // 2, HEIGHT - 110)
+        self.background = utils.AssetManager.load_image('background.jpg', 'ground_fighter', WIDTH, HEIGHT)
+        self.player = Player(WIDTH // 2, HEIGHT - 160)
         self.all_sprites = pygame.sprite.Group()
         self.all_sprites.add(self.player)
         self.enemies = pygame.sprite.Group()
         self.fireballs = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Arial", 18)
-        self.game_duration = 60 * 1000  # 60 secondes
+        self.game_duration = 30 * 1000  # 60 secondes
         self.start_time = pygame.time.get_ticks()
+        self.last_enemy_spawn = 0
+        self.enemy_spawn_delay = 2000  # 4 seconde entre chaque spawn d'ennemi
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -121,24 +125,39 @@ class GroundFighterGame:
     def update(self):
         self.all_sprites.update()
 
-        # Générer des ennemis à des intervalles aléatoires
-        if random.randint(1, 60) == 1:
-            enemy = Enemy()
-            self.all_sprites.add(enemy)
-            self.enemies.add(enemy)
+        current_time = pygame.time.get_ticks()
+        elapsed_time = current_time - self.start_time
+        speed_multiplier_difficulty = (elapsed_time / self.game_duration)
+
+        if current_time - self.last_enemy_spawn > self.enemy_spawn_delay:
+            num_enemies = random.choices([1, 2, 3], weights=[0.55, 0.27, 0.18])[0] 
+            for i in range(num_enemies):
+                speed_multiplier = 0.3 + random.uniform(0.8, 1.3) * speed_multiplier_difficulty
+                enemy = Enemy(speed_multiplier)
+                self.all_sprites.add(enemy)
+                self.enemies.add(enemy)
+            self.last_enemy_spawn = current_time
 
         # Collision boule de feu - ennemi
         hits = pygame.sprite.groupcollide(self.enemies, self.fireballs, False, True)
-        for enemy in hits:
-            enemy.current_health -= 20  # Les ennemis perdent 20 points de vie par tir
+        for enemy, fireballs in hits.items():
+            enemy.current_health -= 20 * len(fireballs)  # 20 points de dégâts par boule de feu
             if enemy.current_health <= 0:
                 enemy.kill()
 
         # Collision joueur - ennemi
-        if pygame.sprite.spritecollide(self.player, self.enemies, False):
+        hits = pygame.sprite.spritecollide(self.player, self.enemies, False)
+        for enemy in hits:
             self.player.current_health -= 20  # Le joueur perd 20 points de vie par collision
+            enemy.kill()  # L'ennemi disparaît après avoir touché le joueur
             if self.player.current_health <= 0:
                 return "game_over"
+
+        # Vérifier si le temps est écoulé
+        if pygame.time.get_ticks() - self.start_time >= self.game_duration:
+            return "win"
+
+        return None
 
     def draw(self):
         self.screen.blit(self.background, (0, 0))
@@ -157,7 +176,6 @@ class GroundFighterGame:
         pygame.display.flip()
 
     def draw_progress_bar(self):
-        # Dessine une barre de progression du temps en haut de l'écran
         BAR_SIZE = int(WIDTH * 0.8)
         PADDING = (WIDTH - BAR_SIZE) // 2
         elapsed_time = pygame.time.get_ticks() - self.start_time
