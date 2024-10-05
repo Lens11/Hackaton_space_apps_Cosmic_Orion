@@ -100,7 +100,7 @@ class Explosion(pygame.sprite.Sprite):
                 self.rect.center = center
 
 class ShooterGame(utils.Game):
-    def __init__(self, screen):
+    def __init__(self, screen, difficulty=1):
         super().__init__()
         self.screen = screen
         self.player = Player(WIDTH // 2, HEIGHT - 110)
@@ -111,7 +111,12 @@ class ShooterGame(utils.Game):
         self.explosions = pygame.sprite.Group()
         self.start_time = pygame.time.get_ticks()
         self.background = utils.AssetManager.load_image('background.png', WIDTH, HEIGHT)
-        self.game_duration = 60 * 1000  # 60 seconds
+        self.game_duration = max(30, 60 - (difficulty * 10)) * 1000  # Shorter game for higher difficulty
+
+        # Adjust game parameters based on difficulty
+        self.enemy_spawn_rate = max(1, 48 - (difficulty * 10))  # More enemies at higher difficulty
+        self.powerup_spawn_rate = max(500, 1000 - (difficulty * 50))  # More powerups at higher difficulty
+        self.enemy_speed_range = (1 + difficulty, 3 + difficulty)  # Faster enemies at higher difficulty
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -127,12 +132,12 @@ class ShooterGame(utils.Game):
     def update(self):
         self.all_sprites.update()
 
-        if random.randint(1, 48) == 1:
-            enemy = Enemy()
+        if random.randint(1, self.enemy_spawn_rate) == 1:
+            enemy = self.create_enemy()
             self.all_sprites.add(enemy)
             self.enemies.add(enemy)
 
-        if random.randint(1, 1000) == 1:
+        if random.randint(1, self.powerup_spawn_rate) == 1:
             powerup = PowerUp()
             self.all_sprites.add(powerup)
             self.powerups.add(powerup)
@@ -142,7 +147,7 @@ class ShooterGame(utils.Game):
             explosion = Explosion(hit.rect.center[0], hit.rect.center[1])
             self.all_sprites.add(explosion)
             self.explosions.add(explosion)
-            enemy = Enemy()
+            enemy = self.create_enemy()
             self.all_sprites.add(enemy)
             self.enemies.add(enemy)
 
@@ -159,14 +164,10 @@ class ShooterGame(utils.Game):
         if elapsed_time >= self.game_duration:
             return "win"
 
-    def create_starfield(width, height, star_count=100):
-        surface = pygame.Surface((width, height))
-        surface.fill(BLACK)
-        for _ in range(star_count):
-            x = random.randint(0, width - 1)
-            y = random.randint(0, height - 1)
-            pygame.draw.circle(surface, WHITE, (x, y), 1)
-        return surface
+    def create_enemy(self):
+        enemy = Enemy()
+        enemy.speed = random.randint(*self.enemy_speed_range)
+        return enemy
 
     def draw(self):
         self.screen.blit(self.background, (0, 0))

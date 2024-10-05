@@ -20,66 +20,105 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-
-
-
-
 class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.background = utils.AssetManager.load_image('background.png', WIDTH, HEIGHT)
-        self.font = pygame.font.SysFont("Arial", 32)
         self.games = [
-    ("Shooter Game", space_shooter.ShooterGame),
-    ("Breakout Game", breakout.BreakoutGame), 
-]
+            [
+                ("Space Shooter Easy", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "Space Shooter Easy"),
+                ("Space Shooter Medium", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Space Shooter Medium"),
+                ("Space Shooter Hard", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Space Shooter Hard"),
+            ],
+            [
+                ("Breakout Easy", lambda s: breakout.BreakoutGame(s), "SS1.png", "Breakout Easy"),
+                ("Breakout Medium", lambda s: breakout.BreakoutGame(s), "SS2.png", "Breakout Medium"),
+                ("Breakout Hard", lambda s: breakout.BreakoutGame(s), "SS3.png", "Breakout Hard"),
+            ]
+        ]
         self.buttons = self.create_buttons()
+        self.hovered_button = None
 
     def create_buttons(self):
         buttons = []
-        for i, (game_name, _) in enumerate(self.games):
-            y = HEIGHT // 2 - (len(self.games) * 60) // 2 + i * 60
-            buttons.append(Button(WIDTH // 2 - 100, y, 200, 50, game_name, GREEN, WHITE, 32))
-        buttons.append(Button(WIDTH // 2 - 100, HEIGHT - 100, 200, 50, "Quit", RED, WHITE, 32))
+        column_width = WIDTH // 4
+        for col, game_column in enumerate(self.games):
+            for row, (game_name, game_class, image_name, display_name) in enumerate(game_column):
+                x = column_width * col + (column_width - 100) // 2
+                y = HEIGHT // 2 - (len(game_column) * 80) // 2 + row * 120
+                # On passe le nom à afficher (display_name) lors du hover
+                buttons.append(ImageButton(x, y, image_name, scale=0.5, game_class=game_class, display_name=display_name))
+        
+        # Add Quit button
+        buttons.append(ImageButton(WIDTH // 2 - 50, HEIGHT - 70, "quit_button.png", scale=0.5, game_class=None, display_name="Quit"))
         return buttons
 
     def run(self):
+        font = pygame.font.SysFont("Arial", 32)
+        
         while True:
             self.screen.blit(self.background, (0, 0))
+            
+            mouse_pos = pygame.mouse.get_pos()
+            self.hovered_button = None
             for button in self.buttons:
+                button.set_hover(button.rect.collidepoint(mouse_pos))
+                if button.rect.collidepoint(mouse_pos):
+                    self.hovered_button = button
                 button.draw(self.screen)
+            
+            # Si un bouton est survolé, afficher le nom du mini-jeu
+            if self.hovered_button and self.hovered_button.display_name is not None:
+                game_name_text = f"{self.hovered_button.display_name}"
+                text_surface = font.render(game_name_text, True, WHITE)
+                text_rect = text_surface.get_rect(center=(WIDTH // 2, HEIGHT // 4 - 75))
+                self.screen.blit(text_surface, text_rect)
+            
             pygame.display.flip()
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return None
                 if event.type == pygame.MOUSEBUTTONDOWN:
-                    for i, button in enumerate(self.buttons[:-1]):
+                    for button in self.buttons:
                         if button.is_clicked(event.pos):
-                            return self.games[i][1]
-                    if self.buttons[-1].is_clicked(event.pos):
-                        return None
+                            if button.game_class is None:  # Quit button
+                                return None
+                            return button.game_class
 
-
-class Button:
-    def __init__(self, x, y, width, height, text, color, text_color, font_size):
-        self.rect = pygame.Rect(x, y, width, height)
-        self.text = text
-        self.color = color
-        self.text_color = text_color
-        self.font = pygame.font.SysFont("Arial", font_size)
+class ImageButton:
+    def __init__(self, x, y, image_name, scale=1, game_class=None, display_name=None):
+        self.original_image = utils.AssetManager.load_image(image_name, 70, 70)  # Load without scaling
+        width = int(self.original_image.get_width() * scale)
+        height = int(self.original_image.get_height() * scale)
+        self.image = pygame.transform.scale(self.original_image, (width, height))
+        self.rect = self.image.get_rect()
+        self.rect.topleft = (x, y)
+        self.game_class = game_class
+        self.display_name = display_name  # Store the name to display
 
     def draw(self, surface):
-        pygame.draw.rect(surface, self.color, self.rect)
-        text_surface = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        surface.blit(text_surface, text_rect)
+        surface.blit(self.image, self.rect.topleft)
 
     def is_clicked(self, pos):
         return self.rect.collidepoint(pos)
 
+    def set_hover(self, is_hovering):
+        if is_hovering:
+            # Create a slightly larger version of the image for hover effect
+            hover_image = pygame.transform.scale(self.original_image, 
+                                                 (110, 110))
+            self.image = hover_image
+            # Adjust position to keep the button centered
+            self.rect = self.image.get_rect(center=self.rect.center)
+        else:
+            # Reset to original size
+            self.image = pygame.transform.scale(self.original_image, (100, 100))
+            self.rect = self.image.get_rect(center=self.rect.center)
+
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Game Launcher")
     menu = Menu(screen)
     
     while True:
