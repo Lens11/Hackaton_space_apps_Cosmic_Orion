@@ -41,7 +41,7 @@ class Menu:
             0 : ('Gas_Giant.png', "Gas Giant Exoplanet"),
             1 : ('Neptunian.png', "Neptunian Exoplanet"),
             2 : ('Terrestrial.png', "Terrestrial Exoplanet"),
-            3 : ('Gas_Giant.png', "Super-Earth Exoplanet")
+            3 : ('Super_Earth.png', "Super-Earth Exoplanet")
         }
 
         self.games = [
