@@ -208,8 +208,19 @@ def main():
         if game_class is None:
             break
         
-        game = game_class(screen, menu) if game_class == im_disp.SimpleBackgroundGame else game_class(screen)
-        result = game.run()
+        if game_class == im_disp.SimpleBackgroundGame:
+            game = game_class(screen, menu.hovered_button.original_image.get_name(), menu)
+            result = game.run()
+            if isinstance(result, utils.Game):
+                game = result
+                result = game.run()
+            elif result == "menu":
+                continue
+            elif result == "quit":
+                break
+        else:
+            game = game_class(screen)
+            result = game.run()
         
         if result == "quit":
             break

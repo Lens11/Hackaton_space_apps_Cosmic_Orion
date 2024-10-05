@@ -15,6 +15,10 @@ class SimpleBackgroundGame(utils.Game):
         self.return_button = pygame.Rect(20, 20, 40, 40)
         self.return_button_image = button_image
 
+        self.play_button_image = utils.AssetManager.load_image('PLAY.png', 'menu', 240, 80)
+        button_y = self.screen.get_height() - 100  # Position the button 100 pixels from the bottom
+        self.play_button = pygame.Rect(self.screen.get_width() // 2 - 120, button_y, 240, 80)  # Adjusted to match image size
+        
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -24,6 +28,8 @@ class SimpleBackgroundGame(utils.Game):
                     self.running = False
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if self.return_button.collidepoint(event.pos):
+                    return False
+                elif self.play_button.collidepoint(event.pos):
                     self.unlock_first_minigame()
                     return False  # Exit the game loop
         return self.running
@@ -34,6 +40,7 @@ class SimpleBackgroundGame(utils.Game):
     def draw(self):
         self.screen.blit(self.background, (0, 0))
         self.screen.blit(self.return_button_image, self.return_button)
+        self.screen.blit(self.play_button_image, self.play_button)
         pygame.display.flip()
 
     def run(self):
