@@ -62,8 +62,8 @@ class Menu:
                 ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Space Shooter Hard"),
             ],
             [
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "Ground Fighter Easy"),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "SS2.png", "Ground Fighter Medium"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "k2.png", "K2-131b"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "kepler.png", "Kepler-452b"),
                 ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "SS3.png", "Ground Fighter Hard"),
             ]
         ]
