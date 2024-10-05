@@ -18,8 +18,8 @@ YELLOW = (255, 255, 0)
 
 class AssetManager:
     @staticmethod
-    def load_image(name, width, height):
-        fullname = os.path.join('assets', name)
+    def load_image(name, game_name, width, height):
+        fullname = os.path.join('assets', game_name, name)
         image = pygame.image.load(fullname).convert_alpha()
         return pygame.transform.scale(image, (width, height))
 
@@ -31,7 +31,7 @@ class Game:
         pygame.display.set_caption("Mini Game")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Arial", 18)
-        self.background = AssetManager.load_image('background.png', WIDTH, HEIGHT)
+        self.background = AssetManager.load_image('background.png','menu', WIDTH, HEIGHT)
         self.all_sprites = pygame.sprite.Group()
 
     def handle_events(self):

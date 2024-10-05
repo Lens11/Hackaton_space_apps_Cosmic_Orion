@@ -28,7 +28,7 @@ class GameObject(pygame.sprite.Sprite):
 
 class Player(GameObject):
     def __init__(self, x, y):
-        super().__init__(utils.AssetManager.load_image('player.png', 30, 60), x, y)
+        super().__init__(utils.AssetManager.load_image('player.png', 'space_shooter', 30, 60), x, y)
         self.speed = 5
 
     def update(self):
@@ -43,11 +43,7 @@ class Player(GameObject):
 
 class Enemy(GameObject):
     def __init__(self):
-<<<<<<< HEAD
-        super().__init__(utils.AssetManager.load_image('enemy.png', 30, 30), 
-=======
-        super().__init__(utils.AssetManager.load_image('enemy.png', 50, 50), 
->>>>>>> 6605fbf39685247485960443fbf82e041f03b537
+        super().__init__(utils.AssetManager.load_image('enemy.png', 'space_shooter', 30, 30), 
         random.randint(0, WIDTH - 50), 
         random.randint(-100, -40))
         self.speed = random.randint(1, 3)
@@ -59,7 +55,7 @@ class Enemy(GameObject):
 
 class PowerUp(GameObject):
     def __init__(self):
-        super().__init__(utils.AssetManager.load_image('powerup.png', 30, 30),
+        super().__init__(utils.AssetManager.load_image('powerup.png', 'space_shooter', 30, 30),
         random.randint(0, WIDTH - 30),
         random.randint(-100, -40))
         self.speed = random.randint(3, 5)
@@ -71,7 +67,7 @@ class PowerUp(GameObject):
             
 class Bullet(GameObject):
     def __init__(self, x, y):
-        super().__init__(utils.AssetManager.load_image('bullet.png', 10, 15), x, y)
+        super().__init__(utils.AssetManager.load_image('bullet.png', 'space_shooter', 10, 15), x, y)
         self.speed = -10
 
     def update(self):
@@ -79,11 +75,10 @@ class Bullet(GameObject):
         if self.rect.bottom < 0:
             self.kill()
 
-<<<<<<< HEAD
 class Explosion(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
-        self.images = [utils.AssetManager.load_image(f'explosion{i}.png', 50, 50) for i in range(1, 8)]
+        self.images = [utils.AssetManager.load_image(f'explosion{i}.png', 'space_shooter', 50, 50) for i in range(1, 8)]
         self.image = self.images[0]
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
@@ -91,34 +86,6 @@ class Explosion(pygame.sprite.Sprite):
         self.last_update = pygame.time.get_ticks()
         self.frame_rate = 50  # milliseconds
 
-=======
-class PowerUp(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = load_image('powerup.png', 30, 30)
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randint(0, WIDTH - self.rect.width)
-        self.rect.y = random.randint(-100, -40)
-        self.speed = random.randint(3, 5)
-        
-    def update(self):
-        self.rect.y += self.speed
-        if self.rect.top > HEIGHT:
-            self.kill()
-
-# Explosion class
-class Explosion(pygame.sprite.Sprite):
-    def __init__(self, x, y):
-        super().__init__()
-        self.images = [load_image(f'explosion{i}.png', 50, 50) for i in range(1, 8)]  # Assuming you have 5 explosion images
-        self.image = self.images[0]
-        self.rect = self.image.get_rect()
-        self.rect.center = (x, y)
-        self.frame = 0
-        self.last_update = pygame.time.get_ticks()
-        self.frame_rate = 50  # milliseconds
-
->>>>>>> 6605fbf39685247485960443fbf82e041f03b537
     def update(self):
         now = pygame.time.get_ticks()
         if now - self.last_update > self.frame_rate:
@@ -131,10 +98,6 @@ class Explosion(pygame.sprite.Sprite):
                 self.image = self.images[self.frame]
                 self.rect = self.image.get_rect()
                 self.rect.center = center
-<<<<<<< HEAD
-=======
-                
->>>>>>> 6605fbf39685247485960443fbf82e041f03b537
 
 class ShooterGame(utils.Game):
     def __init__(self, screen):
@@ -147,7 +110,7 @@ class ShooterGame(utils.Game):
         self.powerups = pygame.sprite.Group()
         self.explosions = pygame.sprite.Group()
         self.start_time = pygame.time.get_ticks()
-        self.background = utils.AssetManager.load_image('background.png', WIDTH, HEIGHT)
+        self.background = utils.AssetManager.load_image('background.png', 'space_shooter', WIDTH, HEIGHT)
         self.game_duration = 60 * 1000  # 60 seconds
 
     def handle_events(self):
@@ -168,21 +131,12 @@ class ShooterGame(utils.Game):
             enemy = Enemy()
             self.all_sprites.add(enemy)
             self.enemies.add(enemy)
-<<<<<<< HEAD
 
         if random.randint(1, 1000) == 1:
             powerup = PowerUp()
             self.all_sprites.add(powerup)
             self.powerups.add(powerup)
 
-=======
-            
-        if random.randint(1, 1000) == 1:
-            power = PowerUp()
-            self.all_sprites.add(power)
-            self.powerups.add(power)
-            
->>>>>>> 6605fbf39685247485960443fbf82e041f03b537
         hits = pygame.sprite.groupcollide(self.enemies, self.bullets, True, True)
         for hit in hits:
             explosion = Explosion(hit.rect.center[0], hit.rect.center[1])

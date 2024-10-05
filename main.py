@@ -4,6 +4,7 @@ import space_shooter_c1 as space_shooter
 import breakout_c1 as breakout
 import os
 import utils
+import ground_fighter_c1 as ground_fighter
 
 pygame.init()
 
@@ -27,11 +28,13 @@ YELLOW = (255, 255, 0)
 class Menu:
     def __init__(self, screen):
         self.screen = screen
-        self.background = utils.AssetManager.load_image('background.png', WIDTH, HEIGHT)
+        self.background = utils.AssetManager.load_image('background.png','menu', WIDTH, HEIGHT)
         self.font = pygame.font.SysFont("Arial", 32)
         self.games = [
     ("Shooter Game", space_shooter.ShooterGame),
     ("Breakout Game", breakout.BreakoutGame), 
+    ("Ground Fighter", ground_fighter.GroundFighterGame), 
+    
 ]
         self.buttons = self.create_buttons()
 
