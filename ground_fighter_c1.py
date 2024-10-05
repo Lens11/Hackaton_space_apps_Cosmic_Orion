@@ -127,17 +127,15 @@ class GroundFighterGame:
 
         current_time = pygame.time.get_ticks()
         elapsed_time = current_time - self.start_time
-        spawn_probability = min(0.8, 0.3 + (elapsed_time / self.game_duration) * 0.5)
         speed_multiplier_difficulty = (elapsed_time / self.game_duration)
 
         if current_time - self.last_enemy_spawn > self.enemy_spawn_delay:
-            num_enemies = random.choices([1, 2, 3], weights=[0.6, 0.3, 0.1])[0]  # 60% pour 1, 30% pour 2, 10% pour 3
+            num_enemies = random.choices([1, 2, 3], weights=[0.55, 0.27, 0.18])[0] 
             for i in range(num_enemies):
-                if random.random() < spawn_probability:
-                    speed_multiplier = 0.5 + random.uniform(0.8, 1.3) * speed_multiplier_difficulty
-                    enemy = Enemy(speed_multiplier)
-                    self.all_sprites.add(enemy)
-                    self.enemies.add(enemy)
+                speed_multiplier = 0.3 + random.uniform(0.8, 1.3) * speed_multiplier_difficulty
+                enemy = Enemy(speed_multiplier)
+                self.all_sprites.add(enemy)
+                self.enemies.add(enemy)
             self.last_enemy_spawn = current_time
 
         # Collision boule de feu - ennemi
