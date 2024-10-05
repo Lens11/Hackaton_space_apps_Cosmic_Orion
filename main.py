@@ -39,8 +39,8 @@ class Menu:
         
         self.starting_images = {
             0 : ('Gas_Giant.png', "Gas Giant Exoplanet"),
-            1 : ('Gas_Giant.png', "Neptunian Exoplanet"),
-            2 : ('Gas_Giant.png', "Terrestrian Exoplanet"),
+            1 : ('Neptunian.png', "Neptunian Exoplanet"),
+            2 : ('Terrestrial.png', "Terrestrial Exoplanet"),
             3 : ('Gas_Giant.png', "Super-Earth Exoplanet")
         }
 
