@@ -5,6 +5,7 @@ import breakout_c1 as breakout
 import os
 import utils
 import ground_fighter_c1 as ground_fighter
+import image_display_c1 as im_disp
 
 pygame.init()
 
@@ -30,9 +31,17 @@ class Menu:
 
         # Dictionary to track unlocked levels
         self.unlocked_levels = {
-            'space_shooter': [True, False, False],  
-            'breakout': [True, False, False],
-            'ground_fighter': [True, False, False]
+            'space_shooter': [False, False, False],  
+            'breakout': [False, False, False],
+            'ground_fighter': [False, False, False],
+            'simple_background': [True, True, True, True]
+        }
+        
+        self.starting_images = {
+            0 : ('Gas_Giant.png', "Gas Giant Exoplanet"),
+            1 : ('Gas_Giant.png', "Neptunian Exoplanet"),
+            2 : ('Gas_Giant.png', "Terrestrian Exoplanet"),
+            3 : ('Gas_Giant.png', "Super-Earth Exoplanet")
         }
 
         self.games = [
@@ -57,23 +66,22 @@ class Menu:
 
     def create_buttons(self):
         buttons = []
-        row_height = (HEIGHT - 100) // (len(self.games) + 1)  # Divide the screen height into rows for each game category
-        button_spacing = 150  # Space between buttons horizontally
-        button_width = 70  # Width of each button
-
+        row_height = (HEIGHT - 100) // (len(self.games) + 1)
+        button_spacing = 150
+        button_width = 70
         for row, game_column in enumerate(self.games):
-            y = row_height * (row + 1) - button_width // 2 + 100  # Position buttons vertically based on the row
-            buttons.append(ImageButton(80,  y+10, "play-button.png", scale=0.5, game_class=None, display_name="Start Adventure", unlocked=True, size=50))
-
+            y = row_height * (row + 1) - button_width // 2 + 100
+            # Create the SimpleBackgroundGame button for this row
+            image_name, display_name = self.starting_images[row]
+            buttons.append(ImageButton(80, y+10, "play-button.png", scale=0.5, 
+                                       game_class=lambda s, img=image_name: im_disp.SimpleBackgroundGame(s, image=img), 
+                                       display_name=display_name, unlocked=True, 
+                                       game_key="simple_background", size=50))
             for col, (game_key, game_class, image_name, display_name) in enumerate(game_column):
-                x = 220 + col * button_spacing  # Horizontal placement
-
-                # Check if this level is unlocked
+                x = 220 + col * button_spacing
                 unlocked = self.unlocked_levels[game_key][col]
-
-                # Create the button, pass the unlocked status and the game_key
                 buttons.append(ImageButton(x, y, image_name, scale=0.5, game_class=game_class, display_name=display_name, unlocked=unlocked, game_key=game_key))
-                buttons.append(ImageButton(x + 75,  y+10, "choice.png", scale=0.5, game_class=None, display_name="MCQ", unlocked=True, size=40))
+                buttons.append(ImageButton(x + 75,  y+10, "choice.png", scale=0.5, game_class=None, display_name="MCQ", unlocked=False, size=40))
         # Add Quit button
         buttons.append(ImageButton(WIDTH - 80,  50, "quit_button.png", scale=0.5, game_class=None, display_name="Exit Game", unlocked=True))
         return buttons
