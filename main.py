@@ -27,7 +27,7 @@ class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.background = utils.AssetManager.load_image('background.png', 'menu', WIDTH, HEIGHT)
-        self.font = pygame.font.SysFont("Arial", 32)
+        self.font = pygame.font.SysFont("britannic", 32)
 
         # Dictionary to track unlocked levels
         self.unlocked_levels = {
@@ -47,9 +47,9 @@ class Menu:
 
         self.games = [
             [
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "Space Shooter Easy"),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Space Shooter Medium"),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Space Shooter Hard"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B"),
             ],
             [
                 ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "Ground Fighter Easy"),
@@ -93,7 +93,7 @@ class Menu:
         return buttons
     
     def run(self):
-        font = pygame.font.SysFont("Arial", 32)
+        font = pygame.font.SysFont("britannic", 32)
 
         while True:
             self.screen.blit(self.background, (0, 0))
@@ -162,7 +162,8 @@ class ImageButton:
 
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Game Launcher")
+    pygame.display.set_caption("ExoExplorer")
+    pygame.display.set_icon(pygame.image.load('./assets/menu/icon.png'))
     menu = Menu(screen)
     
     while True:
@@ -179,7 +180,7 @@ def main():
             continue
         
         # Show game over screen
-        font = pygame.font.SysFont("Arial", 64)
+        font = pygame.font.SysFont("britannic", 64)
         if result == "win":
             # Unlock the next level if available
             game_key = menu.hovered_button.game_key  # Get the game_key from the button

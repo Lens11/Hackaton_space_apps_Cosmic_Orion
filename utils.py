@@ -28,9 +28,9 @@ class AssetManager:
 class Game:
     def __init__(self):
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Mini Game")
+        pygame.display.set_caption("ExoExplorer")
         self.clock = pygame.time.Clock()
-        self.font = pygame.font.SysFont("Arial", 18)
+        self.font = pygame.font.SysFont("britannic", 18)
         self.background = AssetManager.load_image('background.png','menu', WIDTH, HEIGHT)
         self.all_sprites = pygame.sprite.Group()
 
