@@ -96,7 +96,8 @@ class Enemy(GameObject):
         pygame.draw.rect(surface, GREEN, (self.rect.x, self.rect.y - 10, bar_width * health_ratio, bar_height))
 
 class GroundFighterGame:
-    def __init__(self, screen):
+    def __init__(self, screen, difficulty=1):
+        self.difficulty = difficulty
         self.screen = screen
         self.background = utils.AssetManager.load_image('background.jpg', 'ground_fighter', WIDTH, HEIGHT)
         self.player = Player(WIDTH // 2, HEIGHT - 160)
@@ -106,10 +107,10 @@ class GroundFighterGame:
         self.fireballs = pygame.sprite.Group()
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont("Arial", 18)
-        self.game_duration = 30 * 1000  # 60 secondes
+        self.game_duration = max(30, 60 - (self.difficulty * 10)) * 1000  # Shorter game for higher difficulty
         self.start_time = pygame.time.get_ticks()
         self.last_enemy_spawn = 0
-        self.enemy_spawn_delay = 2000  # 4 seconde entre chaque spawn d'ennemi
+        self.enemy_spawn_delay = max(1500, 3000-(500*self.difficulty))  # 4 seconde entre chaque spawn d'ennemi
 
     def handle_events(self):
         for event in pygame.event.get():
@@ -130,9 +131,14 @@ class GroundFighterGame:
         speed_multiplier_difficulty = (elapsed_time / self.game_duration)
 
         if current_time - self.last_enemy_spawn > self.enemy_spawn_delay:
-            num_enemies = random.choices([1, 2, 3], weights=[0.55, 0.27, 0.18])[0] 
+            if self.difficulty == 1:
+                num_enemies = random.choices([1, 2, 3], weights=[0.60, 0.27, 0.13])[0]
+            elif self.difficulty == 2:
+                num_enemies = random.choices([1, 2, 3], weights=[0.55, 0.29, 0.16])[0]
+            else:
+                num_enemies = random.choices([1, 2, 3], weights=[0.48, 0.31, 0.21])[0]
             for i in range(num_enemies):
-                speed_multiplier = 0.3 + random.uniform(0.8, 1.3) * speed_multiplier_difficulty
+                speed_multiplier = 0.15*self.difficulty + random.uniform(0.8, 1.3) * speed_multiplier_difficulty
                 enemy = Enemy(speed_multiplier)
                 self.all_sprites.add(enemy)
                 self.enemies.add(enemy)
