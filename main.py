@@ -30,7 +30,7 @@ class Menu:
 
         # Dictionary to track unlocked levels
         self.unlocked_levels = {
-            'space_shooter': [True, False, False],  # Only the first level is unlocked initially
+            'space_shooter': [True, False, False],  
             'breakout': [True, False, False],
             'ground_fighter': [True, False, False]
         }
@@ -63,6 +63,7 @@ class Menu:
 
         for row, game_column in enumerate(self.games):
             y = row_height * (row + 1) - button_width // 2 + 100  # Position buttons vertically based on the row
+            buttons.append(ImageButton(80,  y+10, "play-button.png", scale=0.5, game_class=None, display_name="Start Adventure", unlocked=True, size=50))
 
             for col, (game_key, game_class, image_name, display_name) in enumerate(game_column):
                 x = 220 + col * button_spacing  # Horizontal placement
@@ -72,7 +73,7 @@ class Menu:
 
                 # Create the button, pass the unlocked status and the game_key
                 buttons.append(ImageButton(x, y, image_name, scale=0.5, game_class=game_class, display_name=display_name, unlocked=unlocked, game_key=game_key))
-
+                buttons.append(ImageButton(x + 75,  y+10, "choice.png", scale=0.5, game_class=None, display_name="MCQ", unlocked=True, size=40))
         # Add Quit button
         buttons.append(ImageButton(WIDTH - 80,  50, "quit_button.png", scale=0.5, game_class=None, display_name="Exit Game", unlocked=True))
         return buttons
@@ -115,8 +116,9 @@ class Menu:
                             return button.game_class
 
 class ImageButton:
-    def __init__(self, x, y, image_name, scale=1, game_class=None, display_name=None, unlocked=True, game_key=None):
-        self.original_image = utils.AssetManager.load_image(image_name, 'menu', 70, 70)  # Load without scaling
+    def __init__(self, x, y, image_name, scale=1, game_class=None, display_name=None, unlocked=True, game_key=None, size=70):
+        self.size = size
+        self.original_image = utils.AssetManager.load_image(image_name, 'menu', self.size, self.size)  # Load without scaling
         self.unlocked = unlocked
         self.game_key = game_key  # Store the game key
         if not unlocked:
@@ -137,11 +139,11 @@ class ImageButton:
 
     def set_hover(self, is_hovering):
         if is_hovering and self.unlocked:
-            hover_image = pygame.transform.scale(self.original_image, (100, 100))  # Create a slightly larger version of the image for hover effect
+            hover_image = pygame.transform.scale(self.original_image, (self.size + 10, self.size + 10))  # Create a slightly larger version of the image for hover effect
             self.image = hover_image
             self.rect = self.image.get_rect(center=self.rect.center)  # Adjust position to keep the button centered
         else:
-            self.image = pygame.transform.scale(self.original_image, (70, 70))  # Reset to original size
+            self.image = pygame.transform.scale(self.original_image, (self.size, self.size))  # Reset to original size
             self.rect = self.image.get_rect(center=self.rect.center)
 
 def main():
