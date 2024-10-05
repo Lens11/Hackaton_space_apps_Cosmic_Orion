@@ -3,6 +3,8 @@ import space_shooter_c1 as space_shooter
 import utils
 import ground_fighter_c1 as ground_fighter
 import image_display_c1 as im_disp
+import image_display_action_c1 as im_action
+
 
 pygame.init()
 
@@ -28,11 +30,15 @@ class Menu:
 
         # Dictionary to track unlocked levels
         self.unlocked_levels = {
-            'space_shooter_1': [False, False, False], 
+            'space_shooter_1': [False, False, False],
+            'space_shooter_1_info' : [False, False, False],
             'ground_fighter_1': [False, False, False],
-            'space_shooter_2': [False, False, False], 
+            'ground_fighter_1_info' : [False, False, False],
+            'space_shooter_2': [False, False, False],
+            'space_shooter_2_info': [False, False, False],
             'ground_fighter_2': [False, False, False],
-            'simple_background': [True, True, True, True]
+            'ground_fighter_2_info': [False, False, False],
+            'simple_backgroundAction': [True, True, True, True]
         }        
         
         self.font = pygame.font.SysFont("britannic", 24)
@@ -53,24 +59,24 @@ class Menu:
 
         self.games = [
             [
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B"),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B"),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B", "51_Pegasi_BSpec.png"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B", "KELT-9BSpec.png"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B", "HIP_11915BSpec.png"),
             ],
             [
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "Ground Fighter Easy"),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS2.png", "Ground Fighter Medium"),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS3.png", "Ground Fighter Hard"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "K2263b.png", "K2-263b", "K2-263bSpec.png"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "HATP11b.png", "HAT-P-11b", "HATSpec.png"),
             ],
             [
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "Space Shooter Easy"),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Space Shooter Medium"),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Space Shooter Hard"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png"),
             ],
             [
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "k2.png", "K2-131b"),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "kepler.png", "Kepler-452b"),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "LHS.png", "LHS 1140b"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "k2.png", "K2-131b", "k2Spec.png"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "kepler.png", "Kepler-452b", "keplerSpec.png"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "LHS.png", "LHS 1140b", "LHSSpec.png"),
             ]
         ]
         self.buttons = self.create_buttons()
@@ -88,26 +94,31 @@ class Menu:
             image_name, display_name = self.starting_images[row]
             selector_image = self.selector_image[row]
             buttons.append(ImageButton(100, y, selector_image, scale=0.5, 
-                                       game_class=lambda s, img=image_name: im_disp.SimpleBackgroundGame(s, image=img, menu=self), 
+                                       game_class=lambda s, img=image_name: im_action.SimpleBackgroundActionGame(s, image=img, menu=self), 
                                        display_name=display_name, unlocked=True, 
-                                       game_key="simple_background", size=(175, 80)))
+                                       game_key="simple_backgroundAction", size=(175, 80)))
             
             # Add progress bar for SimpleBackgroundGame
             BAR_SIZE = 125
             PADDING = 125
-            progress = (sum(self.unlocked_levels["simple_background"]) - 1) / len(self.unlocked_levels["simple_background"])
+            progress = (sum(self.unlocked_levels["simple_backgroundAction"]) - 1) / len(self.unlocked_levels["simple_backgroundAction"])
             bar_width = int(BAR_SIZE * progress)
             t = progress
             COLOR = (int(255*(1 - t)), int(255*t), 0)
             pygame.draw.rect(self.screen, COLOR, (PADDING, y, bar_width, 20))
             pygame.draw.rect(self.screen, WHITE, (PADDING, y, BAR_SIZE, 20), 2)
             
-            for col, (game_key, game_class, image_name, display_name) in enumerate(game_column):
+            for col, (game_key, game_class, image_name, display_name, spec_name) in enumerate(game_column):
                 x = 300 + col * button_spacing
                 unlocked = self.unlocked_levels[game_key][col]
+                unlocked_info = self.unlocked_levels[game_key+"_info"][col]
                 buttons.append(ImageButton(x, y, image_name, scale=0.5, game_class=game_class, display_name=display_name, unlocked=unlocked, game_key=game_key))
                 buttons.append(ImageButton(x + 75,  y+10, "choice.png", scale=0.5, game_class=None, display_name="MCQ", unlocked=False, size=(40,40)))
-        
+                buttons.append(ImageButton(x + 50,  y-30, "information.png", scale=0.5, 
+                                           game_class=lambda s, img=spec_name: im_disp.SimpleBackgroundGame(s, image=img, menu=self), 
+                                           display_name=display_name, unlocked=unlocked_info, 
+                                           game_key=game_key+"_info", size=(20,20)))
+                
         # Add Quit button
         buttons.append(ImageButton(WIDTH - 80,  50, "quit_button.png", scale=0.5, game_class=None, display_name="Exit Game", unlocked=True, size=(30,30)))
         return buttons
@@ -197,18 +208,51 @@ class ImageButton:
             self.image = pygame.transform.scale(self.original_image, (self.size[0], self.size[1]))  # Reset to original size
             self.rect = self.image.get_rect(center=self.rect.center)
 
+class Homepage:
+    def __init__(self, screen):
+        self.screen = screen
+        self.background = utils.AssetManager.load_image('Homepage.png', 'menu', WIDTH, HEIGHT)
+        self.start_button = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 175, 200, 60)
+        self.start_button_image = utils.AssetManager.load_image('START.png', 'menu', 200, 60)
+        self.displayed = False
+
+    def run(self):
+        clock = pygame.time.Clock()
+        while not self.displayed:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return "quit"
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.start_button.collidepoint(event.pos):
+                        self.displayed = True  # Start button clicked, proceed to menu
+
+            self.screen.blit(self.background, (0, 0))
+            self.screen.blit(self.start_button_image, self.start_button)
+            pygame.display.flip()
+            clock.tick(FPS)
+        return "menu"  # Proceed to the menu after the homepage is shown once
+
+
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    
     pygame.display.set_caption("ExoExplorer")
     pygame.display.set_icon(pygame.image.load('./assets/menu/icon.png'))
+    homepage = Homepage(screen)
     menu = Menu(screen)
+    homepage_displayed = False
     
     while True:
+        if not homepage_displayed:
+            # Show the homepage once
+            if homepage.run() == "quit":
+                break
+            homepage_displayed = True
         game_class = menu.run()
         if game_class is None:
             break
         
-        if game_class == im_disp.SimpleBackgroundGame:
+        if game_class == im_action.SimpleBackgroundActionGame or game_class == im_disp.SimpleBackgroundGame:
             game = game_class(screen, menu.hovered_button.original_image.get_name(), menu)
             result = game.run()
             if isinstance(result, utils.Game):
@@ -233,9 +277,11 @@ def main():
             # Unlock the next level if available
             game_key = menu.hovered_button.game_key  # Get the game_key from the button
             unlocked_levels = menu.unlocked_levels[game_key]
+            unlocked_levels_info = menu.unlocked_levels[game_key+"_info"]
             for i, unlocked in enumerate(unlocked_levels):
                 if not unlocked:
                     unlocked_levels[i] = True
+                    unlocked_levels_info[i] = True
                     break
             menu.buttons = menu.create_buttons()  # Update buttons after unlocking
             text = font.render("You Win!", True, GREEN)
