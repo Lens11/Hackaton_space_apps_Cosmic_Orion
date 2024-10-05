@@ -4,7 +4,7 @@ import utils
 import ground_fighter_c1 as ground_fighter
 import image_display_c1 as im_disp
 import image_display_action_c1 as im_action
-import QCM_c1 as qcm
+
 
 pygame.init()
 
@@ -64,19 +64,19 @@ class Menu:
                 ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B", "HIP_11915BSpec.png"),
             ],
             [
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "K2-263b", "K2-263bSpec.png"),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS2.png", "Gliese 436b", "GlieseSpec.png"),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS3.png", "HAT-P-11b", "HATSpec.png"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "K2263b.png", "K2-263b", "K2-263bSpec.png"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "HATP11b.png", "HAT-P-11b", "HATSpec.png"),
             ],
             [
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "TRAPPIST-1", "TRAPPISTSpec.png"),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Kepler-186f", "Kepler-186fSpec.png"),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Proxima Centauri b", "ProximaSpec.png"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png"),
             ],
             [
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "k2.png", "K2-131b", "k2Spec.png"),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "kepler.png", "Kepler-452b", "keplerSpec.png"),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "LHS.png", "LHS 1140b", "LHSSpec.png"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "k2.png", "K2-131b", "k2Spec.png"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "kepler.png", "Kepler-452b", "keplerSpec.png"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "LHS.png", "LHS 1140b", "LHSSpec.png"),
             ]
         ]
         self.buttons = self.create_buttons()
@@ -208,13 +208,46 @@ class ImageButton:
             self.image = pygame.transform.scale(self.original_image, (self.size[0], self.size[1]))  # Reset to original size
             self.rect = self.image.get_rect(center=self.rect.center)
 
+class Homepage:
+    def __init__(self, screen):
+        self.screen = screen
+        self.background = utils.AssetManager.load_image('Homepage.png', 'menu', WIDTH, HEIGHT)
+        self.start_button = pygame.Rect(WIDTH // 2 - 100, HEIGHT // 2 + 175, 200, 60)
+        self.start_button_image = utils.AssetManager.load_image('START.png', 'menu', 200, 60)
+        self.displayed = False
+
+    def run(self):
+        clock = pygame.time.Clock()
+        while not self.displayed:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return "quit"
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.start_button.collidepoint(event.pos):
+                        self.displayed = True  # Start button clicked, proceed to menu
+
+            self.screen.blit(self.background, (0, 0))
+            self.screen.blit(self.start_button_image, self.start_button)
+            pygame.display.flip()
+            clock.tick(FPS)
+        return "menu"  # Proceed to the menu after the homepage is shown once
+
+
 def main():
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    
     pygame.display.set_caption("ExoExplorer")
     pygame.display.set_icon(pygame.image.load('./assets/menu/icon.png'))
+    homepage = Homepage(screen)
     menu = Menu(screen)
+    homepage_displayed = False
     
     while True:
+        if not homepage_displayed:
+            # Show the homepage once
+            if homepage.run() == "quit":
+                break
+            homepage_displayed = True
         game_class = menu.run()
         if game_class is None:
             break
