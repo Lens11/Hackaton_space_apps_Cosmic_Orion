@@ -31,9 +31,10 @@ class Menu:
 
         # Dictionary to track unlocked levels
         self.unlocked_levels = {
-            'space_shooter': [False, False, False],  
-            'breakout': [False, False, False],
-            'ground_fighter': [False, False, False],
+            'space_shooter_1': [False, False, False], 
+            'ground_fighter_1': [False, False, False],
+            'space_shooter_2': [False, False, False], 
+            'ground_fighter_2': [False, False, False],
             'simple_background': [True, True, True, True]
         }
         
@@ -46,19 +47,24 @@ class Menu:
 
         self.games = [
             [
-                ("space_shooter", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "Space Shooter Easy"),
-                ("space_shooter", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Space Shooter Medium"),
-                ("space_shooter", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Space Shooter Hard"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "Space Shooter Easy"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Space Shooter Medium"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Space Shooter Hard"),
             ],
             [
-                ("breakout", lambda s: breakout.BreakoutGame(s), "SS1.png", "Breakout Easy"),
-                ("breakout", lambda s: breakout.BreakoutGame(s), "SS2.png", "Breakout Medium"),
-                ("breakout", lambda s: breakout.BreakoutGame(s), "SS3.png", "Breakout Hard"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "Ground Fighter Easy"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS2.png", "Ground Fighter Medium"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS3.png", "Ground Fighter Hard"),
             ],
             [
-                ("ground_fighter", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "Ground Fighter Easy"),
-                ("ground_fighter", lambda s: ground_fighter.GroundFighterGame(s), "SS2.png", "Ground Fighter Medium"),
-                ("ground_fighter", lambda s: ground_fighter.GroundFighterGame(s), "SS3.png", "Ground Fighter Hard"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "Space Shooter Easy"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Space Shooter Medium"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Space Shooter Hard"),
+            ],
+            [
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "Ground Fighter Easy"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "SS2.png", "Ground Fighter Medium"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "SS3.png", "Ground Fighter Hard"),
             ]
         ]
         self.buttons = self.create_buttons()
@@ -73,7 +79,7 @@ class Menu:
             y = row_height * (row + 1) - button_width // 2 + 100
             # Create the SimpleBackgroundGame button for this row
             image_name, display_name = self.starting_images[row]
-            buttons.append(ImageButton(80, y+10, "play-button.png", scale=0.5, 
+            buttons.append(ImageButton(100, y+5, "play-button.png", scale=0.5, 
                                        game_class=lambda s, img=image_name: im_disp.SimpleBackgroundGame(s, image=img, menu=self), 
                                        display_name=display_name, unlocked=True, 
                                        game_key="simple_background", size=50))
@@ -83,7 +89,7 @@ class Menu:
                 buttons.append(ImageButton(x, y, image_name, scale=0.5, game_class=game_class, display_name=display_name, unlocked=unlocked, game_key=game_key))
                 buttons.append(ImageButton(x + 75,  y+10, "choice.png", scale=0.5, game_class=None, display_name="MCQ", unlocked=False, size=40))
         # Add Quit button
-        buttons.append(ImageButton(WIDTH - 80,  50, "quit_button.png", scale=0.5, game_class=None, display_name="Exit Game", unlocked=True))
+        buttons.append(ImageButton(WIDTH - 80,  50, "quit_button.png", scale=0.5, game_class=None, display_name="Exit Game", unlocked=True, size=50))
         return buttons
     
     def run(self):

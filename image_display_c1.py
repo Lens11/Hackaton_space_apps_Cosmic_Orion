@@ -11,7 +11,7 @@ class SimpleBackgroundGame(utils.Game):
         self.menu = menu  # Store reference to the menu
         
         # Create return button
-        button_image = utils.AssetManager.load_image('quit_button.png', 'menu', 50, 50)
+        button_image = utils.AssetManager.load_image('back.png', 'menu', 50, 50)
         self.return_button = pygame.Rect(20, 20, 50, 50)
         self.return_button_image = button_image
 
