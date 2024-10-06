@@ -4,7 +4,7 @@ import utils
 import ground_fighter_c1 as ground_fighter
 import image_display_c1 as im_disp
 import image_display_action_c1 as im_action
-import QCM
+import QCM_c1 as qcm
 
 
 pygame.init()
@@ -83,33 +83,33 @@ class Menu:
     ],correct_answers=["2", "2", "2"])),
             ],
             [
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS1.png", "K2-263b", "K2-263bSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "K2263b.png", "K2-263b", "K2-263bSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What type of atmosphere do Neptunian planets typically have?", ["Oxygen-rich atmosphere", "Hydrogen and helium-dominated atmosphere", "Carbon dioxide-rich atmosphere", "Sulfur-rich atmosphere"]),
     ], correct_answers=["2"])),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS2.png", "Gliese 436b", "GlieseSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What are mini-Neptunes?", ["Planets larger than Neptune", "Planets smaller than Neptune and bigger than Earth", "Gas giants with rocky surfaces", "Rocky planets with liquid water"]),
         ("Which two planets in our solar system are considered ice giants?", ["Earth and Mars", "Saturn and Jupiter", "Uranus and Neptune", "Mercury and Venus"]),
     ], correct_answers=["2", "3"])),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "SS3.png", "HAT-P-11b", "HATSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "HATP11b.png", "HAT-P-11b", "HATSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("How much larger is Neptune compared to Earth?", ["Two times the size", "Four times the size", "Six times the size", "Eight times the size"]),
         ("What chemicals are commonly found in the atmospheres of Uranus and Neptune?", ["Hydrogen and oxygen", "Water, ammonia, and methane", "Carbon dioxide and nitrogen", "Helium and sulfur"]),
         ("How far away was the ice giant exoplanet discovered in 2014?", ["1,000 light-years", "10,000 light-years", "25,000 light-years", "100,000 light-years"]),
-    ], corect_answers=["2", "2", "3"])),
+    ], correct_answers=["2", "2", "3"])),
             ],
             [
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "SS1.png", "TRAPPIST-1", "TRAPPISTSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What are terrestrial planets primarily composed of?", ["Gas and ice", "Rock, silicate, water, and/or carbon", "Hydrogen and helium", "Metal and dust"]),
     ], correct_answers=["2"])),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "SS2.png", "Kepler-186f", "Kepler-186fSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("How many terrestrial planets are estimated to exist in the Milky Way galaxy?", ["1 billion", "5 billion", "10 billion", "20 billion"]),
         ("What are super-Earths?", ["Terrestrial exoplanets larger than Earth", "Gas giants", "Planets with no solid surface", "Exoplanets smaller than Earth"]),
     ], correct_answers=["3", "1"])),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "SS3.png", "Proxima Centauri b", "ProximaSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("How far away is the TRAPPIST-1 system from Earth?", ["10 light-years", "20 light-years", "30 light-years", "40 light-years"]),
         ("What unique feature do binary star systems provide for terrestrial planets?", ["Increased gravity", "Harmful radiation", "Reduced harmful radiation levels", "Smaller orbits"]),
