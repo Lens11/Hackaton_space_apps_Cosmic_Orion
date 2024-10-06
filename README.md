@@ -29,11 +29,11 @@ To play EXOEXPLORER locally, follow these steps:
 ### Steps
 1. Clone the repository:
     ```bash
-    git clone https://github.com/yourusername/EXOEXPLORER.git
+    git clone https://github.com/Lens11/Hackaton_space_apps_Cosmic_Orion.git
     ```
 2. Navigate to the project directory:
     ```bash
-    cd EXOEXPLORER
+    cd Hackaton_space_apps_cosmic_orion
     ```
 3. Install the required dependencies:
     ```bash
