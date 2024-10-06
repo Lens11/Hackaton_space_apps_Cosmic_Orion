@@ -83,16 +83,16 @@ class Menu:
     ],correct_answers=["2", "2", "2"])),
             ],
             [
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "K2263b.png", "K2-263b", "K2-263bSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "K2263b.png", "K2-263b", "K2-263bSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What type of atmosphere do Neptunian planets typically have?", ["Oxygen-rich atmosphere", "Hydrogen and helium-dominated atmosphere", "Carbon dioxide-rich atmosphere", "Sulfur-rich atmosphere"]),
     ], correct_answers=["2"])),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What are mini-Neptunes?", ["Planets larger than Neptune", "Planets smaller than Neptune and bigger than Earth", "Gas giants with rocky surfaces", "Rocky planets with liquid water"]),
         ("Which two planets in our solar system are considered ice giants?", ["Earth and Mars", "Saturn and Jupiter", "Uranus and Neptune", "Mercury and Venus"]),
     ], correct_answers=["2", "3"])),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "HATP11b.png", "HAT-P-11b", "HATSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "HATP11b.png", "HAT-P-11b", "HATSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("How much larger is Neptune compared to Earth?", ["Two times the size", "Four times the size", "Six times the size", "Eight times the size"]),
         ("What chemicals are commonly found in the atmospheres of Uranus and Neptune?", ["Hydrogen and oxygen", "Water, ammonia, and methane", "Carbon dioxide and nitrogen", "Helium and sulfur"]),
@@ -100,16 +100,16 @@ class Menu:
     ], correct_answers=["2", "2", "3"])),
             ],
             [
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What are terrestrial planets primarily composed of?", ["Gas and ice", "Rock, silicate, water, and/or carbon", "Hydrogen and helium", "Metal and dust"]),
     ], correct_answers=["2"])),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("How many terrestrial planets are estimated to exist in the Milky Way galaxy?", ["1 billion", "5 billion", "10 billion", "20 billion"]),
         ("What are super-Earths?", ["Terrestrial exoplanets larger than Earth", "Gas giants", "Planets with no solid surface", "Exoplanets smaller than Earth"]),
     ], correct_answers=["3", "1"])),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=4), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("How far away is the TRAPPIST-1 system from Earth?", ["10 light-years", "20 light-years", "30 light-years", "40 light-years"]),
         ("What unique feature do binary star systems provide for terrestrial planets?", ["Increased gravity", "Harmful radiation", "Reduced harmful radiation levels", "Smaller orbits"]),
@@ -117,16 +117,16 @@ class Menu:
     ], correct_answers=["4", "3", "2"])),
             ],
             [
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "k2.png", "K2-131b", "k2Spec.png",
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "k2.png", "K2-131b", "k2Spec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What is the mass range of super-Earths compared to Earth?", ["Less than Earth's mass", "1 to 2 times the mass of Earth", "2 to 10 times the mass of Earth", "More than 10 times the mass of Earth"]),
     ], correct_answers=["3"])),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "kepler.png", "Kepler-452b", "keplerSpec.png",
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "kepler.png", "Kepler-452b", "keplerSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What defines a super-Earth in terms of its mass?", ["Larger than Earth's but smaller than gas giants", "Smaller than Earth", "Equal to Earth's mass", "Larger than gas giants like Uranus and Neptune"]),
         ("What types of materials can super-Earths be composed of?", ["Only gas", "Only rock", "Gas, rock, or a combination of both", "Liquid metals"]),
     ], correct_answers=["1", "3"])),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "LHS.png", "LHS 1140b", "LHSSpec.png",
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=4), "LHS.png", "LHS 1140b", "LHSSpec.png",
                  lambda s: qcm.QCMGame(s, questions=[
         ("What makes super-Earths particularly interesting to scientists?", ["They are the most massive exoplanets known", "They offer a glimpse into the diversity of planetary systems beyond our own", "They have solid surfaces only", "They have atmospheres similar to Earth"]),
         ("How does the mass of super-Earths compare to ice giants like Uranus and Neptune?", ["Heavier than ice giants", "Lighter than ice giants", "The same mass as ice giants", "None of the above"]),
