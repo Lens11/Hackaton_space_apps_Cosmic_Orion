@@ -4,6 +4,7 @@ import utils
 import ground_fighter_c1 as ground_fighter
 import image_display_c1 as im_disp
 import image_display_action_c1 as im_action
+import space_jumper_c1 as space_jumperimport 
 import QCM_c1 as qcm
 
 
@@ -40,7 +41,7 @@ class Menu:
             'ground_fighter_1_qcm' : [False, False, False],
             'ground_fighter_1_done' : [False, False, False],
             'space_shooter_2': [False, False, False],
-            'space_shooter_2_info': [False, False, False],            
+            'space_shooter_2_info': [False, False, False],
             'space_shooter_2_qcm' : [False, False, False],
             'space_shooter_2_done' : [False, False, False],
             'ground_fighter_2': [False, False, False],
@@ -68,14 +69,14 @@ class Menu:
 
         self.games = [
             [
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B", "51_Pegasi_BSpec.png",
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B", ["51_Pegasi_BSpec.png", "51_Pegasi_BSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[("What are gas giants primarily composed of?", ["Rock and ice", "Hydrogen and helium", "Metal and dust", "Water and carbon dioxide"]),], correct_answers=["2"])),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B", "KELT-9BSpec.png",
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B", ["KELT-9BSpec.png", "KELT-9BSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("Which two planets in our solar system are gas giants?", ["Earth and Mars", "Jupiter and Neptune", "Jupiter and Saturn", "Venus and Uranus"]),
         ("What is a hot Jupiter?", ["A gas giant that is far from its star", "A small, rocky planet close to its star", "A gas giant orbiting close to its star, making it extremely hot", "A gas giant with a solid surface"]),
     ], correct_answers= ["3", "3"])),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B", "HIP_11915BSpec.png",
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B", ["HIP_11915BSpec.png", "HIP_11915BSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("How many exoplanets have scientists discovered in the last 25 years?", ["Over 500", "Over 5,600", "Over 56,000", "Over 100"]),
         ("What is the name of the youngest hot Jupiter ever found?", ["HD 209458 b", "HIP 67522 b", "Kepler-22b", "WASP-12b"]),
@@ -83,16 +84,16 @@ class Menu:
     ],correct_answers=["2", "2", "2"])),
             ],
             [
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "K2263b.png", "K2-263b", "K2-263bSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "K2263b.png", "K2-263b", ["K2-263bSpec.png", "K2-263bSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("What type of atmosphere do Neptunian planets typically have?", ["Oxygen-rich atmosphere", "Hydrogen and helium-dominated atmosphere", "Carbon dioxide-rich atmosphere", "Sulfur-rich atmosphere"]),
     ], correct_answers=["2"])),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "Gliese436b.png", "Gliese 436b", ["GlieseSpec.png", "GlieseSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("What are mini-Neptunes?", ["Planets larger than Neptune", "Planets smaller than Neptune and bigger than Earth", "Gas giants with rocky surfaces", "Rocky planets with liquid water"]),
         ("Which two planets in our solar system are considered ice giants?", ["Earth and Mars", "Saturn and Jupiter", "Uranus and Neptune", "Mercury and Venus"]),
     ], correct_answers=["2", "3"])),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "HATP11b.png", "HAT-P-11b", "HATSpec.png",
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "HATP11b.png", "HAT-P-11b", ["HATSpec.png", "HATSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("How much larger is Neptune compared to Earth?", ["Two times the size", "Four times the size", "Six times the size", "Eight times the size"]),
         ("What chemicals are commonly found in the atmospheres of Uranus and Neptune?", ["Hydrogen and oxygen", "Water, ammonia, and methane", "Carbon dioxide and nitrogen", "Helium and sulfur"]),
@@ -100,16 +101,16 @@ class Menu:
     ], correct_answers=["2", "2", "3"])),
             ],
             [
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "TRAPPIST1.png", "TRAPPIST-1", ["TRAPPISTSpec.png", "TRAPPISTSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("What are terrestrial planets primarily composed of?", ["Gas and ice", "Rock, silicate, water, and/or carbon", "Hydrogen and helium", "Metal and dust"]),
     ], correct_answers=["2"])),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "Kepler186f.png", "Kepler-186f", ["Kepler-186fSpec.png", "Kepler-186fSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("How many terrestrial planets are estimated to exist in the Milky Way galaxy?", ["1 billion", "5 billion", "10 billion", "20 billion"]),
         ("What are super-Earths?", ["Terrestrial exoplanets larger than Earth", "Gas giants", "Planets with no solid surface", "Exoplanets smaller than Earth"]),
     ], correct_answers=["3", "1"])),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=4), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png",
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=4), "ProximaCentaurib.png", "Proxima Centauri b", ["ProximaSpec.png", "ProximaSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("How far away is the TRAPPIST-1 system from Earth?", ["10 light-years", "20 light-years", "30 light-years", "40 light-years"]),
         ("What unique feature do binary star systems provide for terrestrial planets?", ["Increased gravity", "Harmful radiation", "Reduced harmful radiation levels", "Smaller orbits"]),
@@ -117,16 +118,16 @@ class Menu:
     ], correct_answers=["4", "3", "2"])),
             ],
             [
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "k2.png", "K2-131b", "k2Spec.png",
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "k2.png", "K2-131b", ["k2Spec.png", "k2Spec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("What is the mass range of super-Earths compared to Earth?", ["Less than Earth's mass", "1 to 2 times the mass of Earth", "2 to 10 times the mass of Earth", "More than 10 times the mass of Earth"]),
     ], correct_answers=["3"])),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "kepler.png", "Kepler-452b", "keplerSpec.png",
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "kepler.png", "Kepler-452b", ["keplerSpec.png", "keplerSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("What defines a super-Earth in terms of its mass?", ["Larger than Earth's but smaller than gas giants", "Smaller than Earth", "Equal to Earth's mass", "Larger than gas giants like Uranus and Neptune"]),
         ("What types of materials can super-Earths be composed of?", ["Only gas", "Only rock", "Gas, rock, or a combination of both", "Liquid metals"]),
     ], correct_answers=["1", "3"])),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=4), "LHS.png", "LHS 1140b", "LHSSpec.png",
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=4), "LHS.png", "LHS 1140b", ["LHSSpec.png", "LHSSpec.png"],
                  lambda s: qcm.QCMGame(s, questions=[
         ("What makes super-Earths particularly interesting to scientists?", ["They are the most massive exoplanets known", "They offer a glimpse into the diversity of planetary systems beyond our own", "They have solid surfaces only", "They have atmospheres similar to Earth"]),
         ("How does the mass of super-Earths compare to ice giants like Uranus and Neptune?", ["Heavier than ice giants", "Lighter than ice giants", "The same mass as ice giants", "None of the above"]),
@@ -173,7 +174,7 @@ class Menu:
                                            game_class=qcm_class,
                                            game_key=game_key+"_qcm", display_name=display_name, unlocked=unlocked_qcm, size=(40,40)))
                 buttons.append(ImageButton(x + 50,  y-30, "information.png", scale=0.5, 
-                                           game_class=lambda s, img=spec_name: im_disp.SimpleBackgroundGame(s, image=img, menu=self), 
+                                           game_class=lambda s, imgs=spec_name: MultiSlideInfoGame(s, images=imgs, menu=self), 
                                            display_name=display_name, unlocked=unlocked_info, 
                                            game_key=game_key+"_info", size=(20,20)))
                 
@@ -266,6 +267,44 @@ class ImageButton:
             self.image = pygame.transform.scale(self.original_image, (self.size[0], self.size[1]))  # Reset to original size
             self.rect = self.image.get_rect(center=self.rect.center)
 
+class MultiSlideInfoGame:
+    def __init__(self, screen, images, menu):
+        self.screen = screen
+        self.images = [utils.AssetManager.load_image(img, 'menu', WIDTH, HEIGHT) for img in images]
+        self.menu = menu
+        self.current_slide = 0
+        self.back_button = ImageButton(20, HEIGHT - 60, "back.png", scale=0.5, size=(60, 60))
+        self.forward_button = ImageButton(WIDTH - 60, HEIGHT - 60, "forward.png", scale=0.5, size=(60, 60))
+        self.exit_button = ImageButton(WIDTH - 60, 20, "quit_button.png", scale=0.5, size=(60, 60))
+
+    def run(self):
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    return "quit"
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.back_button.is_clicked(event.pos) and self.current_slide > 0:
+                        self.current_slide -= 1
+                    elif self.forward_button.is_clicked(event.pos) and self.current_slide < len(self.images) - 1:
+                        self.current_slide += 1
+                    elif self.exit_button.is_clicked(event.pos):
+                        return "menu"
+
+            self.screen.blit(self.images[self.current_slide], (0, 0))
+            
+            if self.current_slide > 0:
+                self.back_button.draw(self.screen)
+            if self.current_slide < len(self.images) - 1:
+                self.forward_button.draw(self.screen)
+            self.exit_button.draw(self.screen)
+
+            pygame.display.flip()
+
+        return "menu"
+
+
+
 class Homepage:
     def __init__(self, screen):
         self.screen = screen
@@ -310,7 +349,7 @@ def main():
         if game_class is None:
             break
         
-        if game_class == im_action.SimpleBackgroundActionGame or game_class == im_disp.SimpleBackgroundGame:
+        if (game_class == im_action.SimpleBackgroundActionGame or game_class == im_disp.SimpleBackgroundGame or game_class == MultiSlideInfoGame):
             game = game_class(screen, menu.hovered_button.original_image.get_name(), menu)
             result = game.run()
             if isinstance(result, utils.Game):
