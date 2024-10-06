@@ -4,7 +4,9 @@ import utils
 import ground_fighter_c1 as ground_fighter
 import image_display_c1 as im_disp
 import image_display_action_c1 as im_action
-import space_jumper_c1 as space_jumper
+import space_jumper_c1 as space_jumperimport 
+import QCM_c1 as qcm
+
 
 pygame.init()
 
@@ -32,12 +34,20 @@ class Menu:
         self.unlocked_levels = {
             'space_shooter_1': [False, False, False],
             'space_shooter_1_info' : [False, False, False],
+            'space_shooter_1_qcm' : [False, False, False],
+            'space_shooter_1_done' : [False, False, False],
             'ground_fighter_1': [False, False, False],
             'ground_fighter_1_info' : [False, False, False],
+            'ground_fighter_1_qcm' : [False, False, False],
+            'ground_fighter_1_done' : [False, False, False],
             'space_shooter_2': [False, False, False],
-            'space_shooter_2_info': [False, False, False],
+            'space_shooter_2_info': [False, False, False],            
+            'space_shooter_2_qcm' : [False, False, False],
+            'space_shooter_2_done' : [False, False, False],
             'ground_fighter_2': [False, False, False],
             'ground_fighter_2_info': [False, False, False],
+            'ground_fighter_2_qcm' : [False, False, False],
+            'ground_fighter_2_done' : [False, False, False],
             'simple_backgroundAction': [True, True, True, True]
         }        
         
@@ -59,24 +69,70 @@ class Menu:
 
         self.games = [
             [
-                ("space_shooter_1", lambda s: space_jumper.SpaceJumperGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B", "51_Pegasi_BSpec.png"),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B", "KELT-9BSpec.png"),
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B", "HIP_11915BSpec.png"),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B", "51_Pegasi_BSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[("What are gas giants primarily composed of?", ["Rock and ice", "Hydrogen and helium", "Metal and dust", "Water and carbon dioxide"]),], correct_answers=["2"])),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B", "KELT-9BSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("Which two planets in our solar system are gas giants?", ["Earth and Mars", "Jupiter and Neptune", "Jupiter and Saturn", "Venus and Uranus"]),
+        ("What is a hot Jupiter?", ["A gas giant that is far from its star", "A small, rocky planet close to its star", "A gas giant orbiting close to its star, making it extremely hot", "A gas giant with a solid surface"]),
+    ], correct_answers= ["3", "3"])),
+                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B", "HIP_11915BSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("How many exoplanets have scientists discovered in the last 25 years?", ["Over 500", "Over 5,600", "Over 56,000", "Over 100"]),
+        ("What is the name of the youngest hot Jupiter ever found?", ["HD 209458 b", "HIP 67522 b", "Kepler-22b", "WASP-12b"]),
+        ("How long does it take HIP 67522 b to orbit its star?", ["365 days", "7 days", "30 days", "90 days"]),
+    ],correct_answers=["2", "2", "2"])),
             ],
             [
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "K2263b.png", "K2-263b", "K2-263bSpec.png"),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png"),
-                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "HATP11b.png", "HAT-P-11b", "HATSpec.png"),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "K2263b.png", "K2-263b", "K2-263bSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("What type of atmosphere do Neptunian planets typically have?", ["Oxygen-rich atmosphere", "Hydrogen and helium-dominated atmosphere", "Carbon dioxide-rich atmosphere", "Sulfur-rich atmosphere"]),
+    ], correct_answers=["2"])),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "Gliese436b.png", "Gliese 436b", "GlieseSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("What are mini-Neptunes?", ["Planets larger than Neptune", "Planets smaller than Neptune and bigger than Earth", "Gas giants with rocky surfaces", "Rocky planets with liquid water"]),
+        ("Which two planets in our solar system are considered ice giants?", ["Earth and Mars", "Saturn and Jupiter", "Uranus and Neptune", "Mercury and Venus"]),
+    ], correct_answers=["2", "3"])),
+                ("ground_fighter_1", lambda s: ground_fighter.GroundFighterGame(s), "HATP11b.png", "HAT-P-11b", "HATSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("How much larger is Neptune compared to Earth?", ["Two times the size", "Four times the size", "Six times the size", "Eight times the size"]),
+        ("What chemicals are commonly found in the atmospheres of Uranus and Neptune?", ["Hydrogen and oxygen", "Water, ammonia, and methane", "Carbon dioxide and nitrogen", "Helium and sulfur"]),
+        ("How far away was the ice giant exoplanet discovered in 2014?", ["1,000 light-years", "10,000 light-years", "25,000 light-years", "100,000 light-years"]),
+    ], correct_answers=["2", "2", "3"])),
             ],
             [
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png"),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png"),
-                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png"),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=1), "TRAPPIST1.png", "TRAPPIST-1", "TRAPPISTSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("What are terrestrial planets primarily composed of?", ["Gas and ice", "Rock, silicate, water, and/or carbon", "Hydrogen and helium", "Metal and dust"]),
+    ], correct_answers=["2"])),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=2), "Kepler186f.png", "Kepler-186f", "Kepler-186fSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("How many terrestrial planets are estimated to exist in the Milky Way galaxy?", ["1 billion", "5 billion", "10 billion", "20 billion"]),
+        ("What are super-Earths?", ["Terrestrial exoplanets larger than Earth", "Gas giants", "Planets with no solid surface", "Exoplanets smaller than Earth"]),
+    ], correct_answers=["3", "1"])),
+                ("space_shooter_2", lambda s: space_shooter.ShooterGame(s, difficulty=3), "ProximaCentaurib.png", "Proxima Centauri b", "ProximaSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("How far away is the TRAPPIST-1 system from Earth?", ["10 light-years", "20 light-years", "30 light-years", "40 light-years"]),
+        ("What unique feature do binary star systems provide for terrestrial planets?", ["Increased gravity", "Harmful radiation", "Reduced harmful radiation levels", "Smaller orbits"]),
+        ("What is Kepler-11 b known for?", ["Being the largest terrestrial planet", "Orbiting its star very closely", "Having a solid surface", "Being part of a binary star system"]),
+    ], correct_answers=["4", "3", "2"])),
             ],
             [
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=1), "k2.png", "K2-131b", "k2Spec.png"),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=2), "kepler.png", "Kepler-452b", "keplerSpec.png"),
-                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s, difficulty=3), "LHS.png", "LHS 1140b", "LHSSpec.png"),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "k2.png", "K2-131b", "k2Spec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("What is the mass range of super-Earths compared to Earth?", ["Less than Earth's mass", "1 to 2 times the mass of Earth", "2 to 10 times the mass of Earth", "More than 10 times the mass of Earth"]),
+    ], correct_answers=["3"])),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "kepler.png", "Kepler-452b", "keplerSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("What defines a super-Earth in terms of its mass?", ["Larger than Earth's but smaller than gas giants", "Smaller than Earth", "Equal to Earth's mass", "Larger than gas giants like Uranus and Neptune"]),
+        ("What types of materials can super-Earths be composed of?", ["Only gas", "Only rock", "Gas, rock, or a combination of both", "Liquid metals"]),
+    ], correct_answers=["1", "3"])),
+                ("ground_fighter_2", lambda s: ground_fighter.GroundFighterGame(s), "LHS.png", "LHS 1140b", "LHSSpec.png",
+                 lambda s: qcm.QCMGame(s, questions=[
+        ("What makes super-Earths particularly interesting to scientists?", ["They are the most massive exoplanets known", "They offer a glimpse into the diversity of planetary systems beyond our own", "They have solid surfaces only", "They have atmospheres similar to Earth"]),
+        ("How does the mass of super-Earths compare to ice giants like Uranus and Neptune?", ["Heavier than ice giants", "Lighter than ice giants", "The same mass as ice giants", "None of the above"]),
+        ("In addition to their mass, what characteristic is commonly studied in super-Earths?", ["Their proximity to Earth", "Their composition and atmosphere", "Their orbital speed", "Their rotation period"]),
+    ], correct_answers=["2", "2", "2"])),
             ]
         ]
         self.buttons = self.create_buttons()
@@ -108,12 +164,15 @@ class Menu:
             pygame.draw.rect(self.screen, COLOR, (PADDING, y, bar_width, 20))
             pygame.draw.rect(self.screen, WHITE, (PADDING, y, BAR_SIZE, 20), 2)
             
-            for col, (game_key, game_class, image_name, display_name, spec_name) in enumerate(game_column):
+            for col, (game_key, game_class, image_name, display_name, spec_name, qcm_class) in enumerate(game_column):
                 x = 300 + col * button_spacing
                 unlocked = self.unlocked_levels[game_key][col]
                 unlocked_info = self.unlocked_levels[game_key+"_info"][col]
+                unlocked_qcm = self.unlocked_levels[game_key+"_qcm"][col]
                 buttons.append(ImageButton(x, y, image_name, scale=0.5, game_class=game_class, display_name=display_name, unlocked=unlocked, game_key=game_key))
-                buttons.append(ImageButton(x + 75,  y+10, "choice.png", scale=0.5, game_class=None, display_name="MCQ", unlocked=False, size=(40,40)))
+                buttons.append(ImageButton(x + 75,  y+10, "choice.png", scale=0.5,
+                                           game_class=qcm_class,
+                                           game_key=game_key+"_qcm", display_name=display_name, unlocked=unlocked_qcm, size=(40,40)))
                 buttons.append(ImageButton(x + 50,  y-30, "information.png", scale=0.5, 
                                            game_class=lambda s, img=spec_name: im_disp.SimpleBackgroundGame(s, image=img, menu=self), 
                                            display_name=display_name, unlocked=unlocked_info, 
@@ -164,7 +223,7 @@ class Menu:
         for row, game_column in enumerate(self.games):
             y = row_height * (row + 1) - 35 + 100  # Adjusted y position
             game_key = game_column[0][0]
-            progress = (sum(self.unlocked_levels[game_key]) - 1) / len(self.unlocked_levels[game_key])
+            progress = sum(self.unlocked_levels[game_key+"_done"]) / len(self.unlocked_levels[game_key+"_done"])
             if progress < 0: progress = 0
             bar_width = int(BAR_SIZE * progress)
             t = progress
@@ -278,11 +337,35 @@ def main():
             game_key = menu.hovered_button.game_key  # Get the game_key from the button
             unlocked_levels = menu.unlocked_levels[game_key]
             unlocked_levels_info = menu.unlocked_levels[game_key+"_info"]
+            unlocked_levels_qcm = menu.unlocked_levels[game_key+"_qcm"]
+            no_unlock = True
             for i, unlocked in enumerate(unlocked_levels):
                 if not unlocked:
+                    no_unlock = False
+                    # unlocked_levels[i] = True
+                    # unlocked_levels_info[i] = True
+                    unlocked_levels_qcm[i-1] = True
+                    break
+            if no_unlock:
+                unlocked_levels_qcm[-1] = True
+            menu.buttons = menu.create_buttons()  # Update buttons after unlocking
+            text = font.render("You Win!", True, GREEN)
+        elif result == "ok":
+            # Unlock the next level if available
+            game_key = menu.hovered_button.game_key[:-4]
+            unlocked_levels = menu.unlocked_levels[game_key]
+            unlocked_levels_info = menu.unlocked_levels[game_key+"_info"]
+            unlocked_levels_done = menu.unlocked_levels[game_key+"_done"]
+            no_unlock = True
+            for i, unlocked in enumerate(unlocked_levels):
+                if not unlocked:
+                    no_unlock = False
                     unlocked_levels[i] = True
                     unlocked_levels_info[i] = True
+                    unlocked_levels_done[i-1] = True
                     break
+            if no_unlock:
+                unlocked_levels_done[-1] = True
             menu.buttons = menu.create_buttons()  # Update buttons after unlocking
             text = font.render("You Win!", True, GREEN)
         else:
