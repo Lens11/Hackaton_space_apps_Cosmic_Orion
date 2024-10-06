@@ -341,8 +341,6 @@ def main():
             for i, unlocked in enumerate(unlocked_levels):
                 if not unlocked:
                     no_unlock = False
-                    # unlocked_levels[i] = True
-                    # unlocked_levels_info[i] = True
                     unlocked_levels_qcm[i-1] = True
                     break
             if no_unlock:
