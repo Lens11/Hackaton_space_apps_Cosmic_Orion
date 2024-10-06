@@ -15,18 +15,9 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-class GameObject(pygame.sprite.Sprite):
-    def __init__(self, image, x, y):
-        super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
 
-    def update(self):
-        pass
 
-class Player(GameObject):
+class Player(utils.GameObject):
     def __init__(self, x, y):
         super().__init__(utils.AssetManager.load_image('player.png','space_shooter', 30, 60), x, y)
         self.speed = 5
@@ -41,7 +32,7 @@ class Player(GameObject):
     def shoot(self):
         return Bullet(self.rect.centerx, self.rect.top)
 
-class Enemy(GameObject):
+class Enemy(utils.GameObject):
     def __init__(self):
         super().__init__(utils.AssetManager.load_image('enemy.png','space_shooter', 30, 30), 
         random.randint(0, WIDTH - 50), 
@@ -53,7 +44,7 @@ class Enemy(GameObject):
         if self.rect.top > HEIGHT:
             self.kill()
 
-class PowerUp(GameObject):
+class PowerUp(utils.GameObject):
     def __init__(self):
         super().__init__(utils.AssetManager.load_image('powerup.png','space_shooter', 30, 30),
         random.randint(0, WIDTH - 30),
@@ -65,7 +56,7 @@ class PowerUp(GameObject):
         if self.rect.top > HEIGHT:
             self.kill()
             
-class Bullet(GameObject):
+class Bullet(utils.GameObject):
     def __init__(self, x, y):
         super().__init__(utils.AssetManager.load_image('bullet.png','space_shooter', 10, 15), x, y)
         self.speed = -10

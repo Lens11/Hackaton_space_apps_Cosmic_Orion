@@ -15,18 +15,8 @@ GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 
-class GameObject(pygame.sprite.Sprite):
-    def __init__(self, image, x, y):
-        super().__init__()
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
 
-    def update(self):
-        pass
-
-class Player(GameObject):
+class Player(utils.GameObject):
     def __init__(self, x, y):
         super().__init__(utils.AssetManager.load_image('space-suit.png', 'ground_fighter', 40, 65), x, y)
         self.speed = 5
@@ -57,7 +47,7 @@ class Player(GameObject):
         pygame.draw.rect(surface, RED, (self.rect.x, bar_y, bar_width, bar_height))
         pygame.draw.rect(surface, GREEN, (self.rect.x, bar_y, bar_width * health_ratio, bar_height))
 
-class Fireball(GameObject):
+class Fireball(utils.GameObject):
     def __init__(self, x, y, direction):
         super().__init__(utils.AssetManager.load_image('projectile.png', 'ground_fighter', 20, 20), x, y)
         self.speed_x = 10 * direction
@@ -68,7 +58,7 @@ class Fireball(GameObject):
         if self.rect.right < 0 or self.rect.left > WIDTH:
             self.kill()
 
-class Enemy(GameObject):
+class Enemy(utils.GameObject):
     def __init__(self, speed_multiplier=1):
         side = random.choice(['left', 'right'])
         if side == 'left':

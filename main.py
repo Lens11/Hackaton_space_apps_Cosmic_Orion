@@ -4,7 +4,7 @@ import utils
 import ground_fighter_c1 as ground_fighter
 import image_display_c1 as im_disp
 import image_display_action_c1 as im_action
-
+import space_jumper_c1 as space_jumper
 
 pygame.init()
 
@@ -59,7 +59,7 @@ class Menu:
 
         self.games = [
             [
-                ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B", "51_Pegasi_BSpec.png"),
+                ("space_shooter_1", lambda s: space_jumper.SpaceJumperGame(s, difficulty=1), "51PegasiB.png", "51 Pegasi B", "51_Pegasi_BSpec.png"),
                 ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=2), "KELT9B.png", "KELT-9B", "KELT-9BSpec.png"),
                 ("space_shooter_1", lambda s: space_shooter.ShooterGame(s, difficulty=3), "HIP.png", "HIP 11915B", "HIP_11915BSpec.png"),
             ],
